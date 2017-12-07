@@ -27,6 +27,7 @@ public class TravelTimeRecommendor {
 		e.printStackTrace();
 	}
 	//read from the csv file 
+	//String res = readDataFromCSV("C:\\Prigya\\RScript\\PredictedTravelTime.csv");
 	String res = readDataFromCSV("\\home\\leanarch\\spring_flow\\R_models\\PredictedTravelTime.csv");
 	System.out.println("travel time is "+res);
 	return res;
