@@ -14,21 +14,21 @@ public class TravelTimeRecommendor {
 		System.out.println("calling R :"+routeId +" "+weatherCode+" "+timezone+" "+weekDayN);
 	System.out.println("calling R");
 	//Runtime.getRuntime().exec("C:\\Program Files\\R\\R-3.4.1\\bin\\Rscript C:\\Prigya\\RScript\\loadtrafficModel.R "+routeId+" "+weatherCode+" "+timezone+" "+weekDayN);
-	Runtime.getRuntime().exec("\\usr\\lib\\R\\bin\\Rscript \\home\\leanarch\\spring_flow\\R_models\\loadtrafficModel.R "+routeId+" "+weatherCode+" "+timezone+" "+weekDayN);
+	Runtime.getRuntime().exec("/usr/lib/R/bin/Rscript /home/leanarch/spring_flow/R_models/loadtrafficModel.R "+routeId+" "+weatherCode+" "+timezone+" "+weekDayN);
 	System.out.println("done R");
 	
 	
 	//pause for 2 sec so that R execution is complete
 	//sleep 2 seconds
 	try {
-		Thread.sleep(5000);
+		Thread.sleep(7000);
 	} catch (InterruptedException e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	//read from the csv file 
 	//String res = readDataFromCSV("C:\\Prigya\\RScript\\PredictedTravelTime.csv");
-	String res = readDataFromCSV("\\home\\leanarch\\spring_flow\\R_models\\PredictedTravelTime.csv");
+	String res = readDataFromCSV("/home/leanarch/spring_flow/R_models/PredictedTravelTime.csv");
 	System.out.println("travel time is "+res);
 	return res;
 	}
