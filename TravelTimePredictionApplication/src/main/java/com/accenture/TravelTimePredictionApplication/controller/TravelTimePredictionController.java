@@ -24,7 +24,7 @@ public class TravelTimePredictionController {
     }
 
     @RequestMapping(value="/trafficData", method = RequestMethod.POST)
-    public String showWelcomePage(ModelMap model, @RequestParam String routeid, @RequestParam String timestamp) throws IOException{
+    public String showWelcomePage(ModelMap model, @RequestParam String routeid, @RequestParam String timestamp) throws Exception{
 
         PredictedData predData = service.getPredictedValue(routeid, timestamp);
 
@@ -33,6 +33,8 @@ public class TravelTimePredictionController {
         model.put("timestamp", timestamp);
         model.put("pred", predData.gettravelData());
         model.put("weather", predData.getweatherDesc());
+        model.put("accuracy",predData.getAccuracy());
+       // model.put("realData", predData.getRealtimeData());
 
         return "resultPage";
     }

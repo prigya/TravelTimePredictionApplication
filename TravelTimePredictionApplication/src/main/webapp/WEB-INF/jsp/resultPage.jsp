@@ -47,6 +47,11 @@
 	   <td></td>
        <td><h2>${weather}&deg;C</h2></td>
    </tr>
+   <tr>
+       <td></td>
+	   <td></td>
+       <td><h2>${accuracy}</h2></td>
+   </tr>
 
    </table>
 </body>

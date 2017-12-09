@@ -20,7 +20,7 @@ import com.accenture.TravelTimePredictionApplication.service.TravelTimeRecommend
 @Service
 public class TravelTimePredictionService {
 	
-public PredictedData getPredictedValue(String routeId, String timestamp) throws IOException {
+public PredictedData getPredictedValue(String routeId, String timestamp) throws Exception {
 		
 		
 		//get route details
@@ -57,13 +57,25 @@ public PredictedData getPredictedValue(String routeId, String timestamp) throws 
 			e.printStackTrace();
 		}
 		
+		//calling accuracy checker
+		String realtimedata = TravelTimeAccuracyChecker.SomeRealityCheck(routeDetail.getId());
+		
+		
 		
 		String duration = TravelTimeRecommendor.callRModel(routeId,weatherCode,timeZone.toString(),dayofWeek.toString());
+		
+		Integer rtd = Integer.parseInt(realtimedata)/60;
+		Integer ptd = Integer.parseInt(duration);
+		Integer accu = ((ptd - rtd )/rtd )*100;
+		String accuracy = accu.toString();
+		
+		String accData = "Google maps predicts travel duration as "+rtd.toString()+". Accuracy is "+accuracy;
+		
 		String travelData = "You would take "+duration+" mins to travel from "+routeDetail.getName()+" in "+ routeDetail.getCity();
 		String weatherDes = "The weather in your city is "+weatherDesc+" and temperature is "+tempDesc;
 		//trying to return in json format 
 	    //return outString;
-		return new PredictedData(travelData,weatherDes);
+		return new PredictedData(travelData,weatherDes,realtimedata,accData);
 	    }
 	
 	private Date getformattedTimestamp(String timestamp){

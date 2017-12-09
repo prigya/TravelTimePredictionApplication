@@ -4,8 +4,22 @@ public class Route {
 	private String id;
 	private String name;
 	private String city;
+	private String origin; //geographical co-ordinates lat,lon
+	private String destination; //geographical co-ordinates lat,lon
 	
-    public String getCity() {
+    public String getOrigin() {
+		return origin;
+	}
+	public void setOrigin(String origin) {
+		this.origin = origin;
+	}
+	public String getDestination() {
+		return destination;
+	}
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+	public String getCity() {
 		return city;
 	}
 	public void setCity(String city) {
