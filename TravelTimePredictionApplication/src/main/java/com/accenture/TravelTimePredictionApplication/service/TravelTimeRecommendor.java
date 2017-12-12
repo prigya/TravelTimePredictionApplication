@@ -13,10 +13,30 @@ public class TravelTimeRecommendor {
 	public static String callRModel(String routeId, String weatherCode, String timezone, String weekDayN) throws IOException{
 		System.out.println("calling R :"+routeId +" "+weatherCode+" "+timezone+" "+weekDayN);
 	System.out.println("calling R");
-	//Process p = Runtime.getRuntime().exec("C:\\Program Files\\R\\R-3.4.1\\bin\\Rscript C:\\Prigya\\RScript\\loadtrafficModel.R "+routeId+" "+weatherCode+" "+timezone+" "+weekDayN);
-	Process p = Runtime.getRuntime().exec("/usr/lib/R/bin/Rscript /home/leanarch/spring_flow/R_models/loadtrafficModel.R "+routeId+" "+weatherCode+" "+timezone+" "+weekDayN);
+	
+	// create a new array of 5 strings
+    String[] cmdArray = new String[6];
+
+    // first argument is the program we want to open
+    cmdArray[0] = "/usr/lib/R/bin/Rscript";
+    //cmdArray[0] = "C:\\Program Files\\R\\R-3.4.1\\bin\\Rscript";
+
+    // second argument is a txt file we want to open with notepad
+    cmdArray[1] = "/home/leanarch/spring_flow/R_models/loadtrafficModel.R";
+    //cmdArray[1] = "C:\\Prigya\\RScript\\loadtrafficModel.R";
+    
+    //command line arguments to pass
+    cmdArray[2] = routeId;
+    cmdArray[3] = weatherCode;
+    cmdArray[4] = timezone;
+    cmdArray[5] = weekDayN;
+    
+
+	
+	Process p = Runtime.getRuntime().exec(cmdArray,null);
 	try {
 		p.waitFor();
+		Thread.sleep(7000);
 	} catch (InterruptedException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();
@@ -26,14 +46,7 @@ public class TravelTimeRecommendor {
 	System.out.println("done R");
 	
 	
-	//pause for 2 sec so that R execution is complete
-	//sleep 2 seconds
-	try {
-		Thread.sleep(7000);
-	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
+	
 	//read from the csv file 
 	//String res = readDataFromCSV("C:\\Prigya\\RScript\\PredictedTravelTime.csv");
 	String res = readDataFromCSV("/home/leanarch/spring_flow/R_models/PredictedTravelTime.csv");
