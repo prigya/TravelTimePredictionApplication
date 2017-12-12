@@ -18,7 +18,7 @@ public class TravelTimeRecommendor {
     String[] cmdArray = new String[6];
 
     // first argument is the program we want to open
-    cmdArray[0] = "/usr/lib/R/bin/Rscript";
+    cmdArray[0] = "/usr/bin/Rscript";
     //cmdArray[0] = "C:\\Program Files\\R\\R-3.4.1\\bin\\Rscript";
 
     // second argument is a txt file we want to open with notepad
@@ -33,9 +33,9 @@ public class TravelTimeRecommendor {
     
 
 	
-	Process p = Runtime.getRuntime().exec(cmdArray,null);
+	Runtime.getRuntime().exec(cmdArray);
 	try {
-		p.waitFor();
+		//p.waitFor();
 		Thread.sleep(7000);
 	} catch (InterruptedException e1) {
 		// TODO Auto-generated catch block
@@ -55,9 +55,6 @@ public class TravelTimeRecommendor {
 	}
 	
 	
-	
-	
-	
 	//function to read the csv file 
 	private static String readDataFromCSV(String fileName) { 
 		String timeinMin = "";
@@ -75,9 +72,6 @@ public class TravelTimeRecommendor {
 		} 
 		return timeinMin;
 		}
-			
-		
 	
-
 	
 }
