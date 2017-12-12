@@ -27,14 +27,16 @@ public class TravelTimePredictionController {
     public String showWelcomePage(ModelMap model, @RequestParam String routeid, @RequestParam String timestamp) throws Exception{
 
         PredictedData predData = service.getPredictedValue(routeid, timestamp);
+        
+        String metaInfo = "NOTE:This Prediction is done by Leniar regression model which is trained on historical traffic data for selected routes";
 
         
         model.put("routeid", routeid);
         model.put("timestamp", timestamp);
         model.put("pred", predData.gettravelData());
         model.put("weather", predData.getweatherDesc());
-        model.put("accuracy",predData.getAccuracy());
-       // model.put("realData", predData.getRealtimeData());
+        model.put("diff",predData.getAccuracy());
+        model.put("metaInfo", metaInfo);
 
         return "resultPage";
     }

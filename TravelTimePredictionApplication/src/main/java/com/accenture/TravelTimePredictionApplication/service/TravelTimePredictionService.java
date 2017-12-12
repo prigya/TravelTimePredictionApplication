@@ -32,12 +32,39 @@ public PredictedData getPredictedValue(String routeId, String timestamp) throws 
 		//format timestamp from string to date format
 		timestamp = timestamp.replaceAll("T", " "); // this is becoz time stamp coming in url has T in format, needs to be removed
 		System.out.println("Time detail: "+timestamp);
-		Date timeofTrav = getformattedTimestamp(timestamp);
+		
+		//format time to IST timezone, evaluate timeZone of day and day of week, along with time in miliseconds
+		DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // IST time zone 
+		Date timeOfTravel1 = formatter.parse(timestamp);
+		//using calendar
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(timeOfTravel1);
+		Calendar ISTTime = new GregorianCalendar(TimeZone.getTimeZone("Asia/Kolkata"));
+		ISTTime.setTimeInMillis(calendar.getTimeInMillis());
+		int hour = ISTTime.get(Calendar.HOUR_OF_DAY);
+		int min = ISTTime.get(Calendar.MINUTE);
+		System.out.println(hour);
+		System.out.println(min);
+		Integer timeZone = 0;
+		Integer dayofWeek = 0;
+		Long timeInMillis = Long.valueOf(0);
+		timeInMillis = timeOfTravel1.getTime() ;
+		
+		//TimeZone tz = TimeZone.getTimeZone("Asia/Kolkata");
+		//int offset = tz.getOffset(timeInMillis);
+		
+		timeZone = ((hour*60)/15) + ((min+15)/15);
+		dayofWeek = ISTTime.get(Calendar.DAY_OF_WEEK);
+		//timeInMillis = timeInMillis+offset  ;sss
+		
+		
+		/*Date timeofTrav = getformattedTimestamp(timestamp);
 		
 		//get time zone and day of week
 		Integer timeZone = getTimeofDayZone(timestamp);
 				
-		Integer dayofWeek = timeofTrav.getDay()+1;
+		Integer dayofWeek = timeofTrav.getDay()+1;*/
 		
 		//initialize weather code, if API throws exception, this goes as input to the Algorithm
 		String weatherCode = "800";
@@ -58,76 +85,30 @@ public PredictedData getPredictedValue(String routeId, String timestamp) throws 
 		}
 		
 		//calling accuracy checker
-		String realtimedata = TravelTimeAccuracyChecker.SomeRealityCheck(routeDetail.getId());
+		String realtimedata = TravelTimeAccuracyChecker.SomeRealityCheck(routeDetail.getId(),timeInMillis);
 		
 		
 		
 		String duration = TravelTimeRecommendor.callRModel(routeId,weatherCode,timeZone.toString(),dayofWeek.toString());
 		
-		Integer rtd = Integer.parseInt(realtimedata)/60;
+		Integer rtd = Integer.parseInt(realtimedata);
 		Integer ptd = Integer.parseInt(duration);
-		Integer accu = ((ptd - rtd )/rtd )*100;
-		String accuracy = accu.toString();
+		Integer accu = (ptd - rtd);
+		System.out.println("rtd :"+rtd);
+		System.out.println("ptd :"+ptd);
+		System.out.println("accu :"+accu);
 		
-		String accData = "Google maps predicts travel duration as "+rtd.toString()+". Accuracy is "+accuracy;
+		String diff = accu.toString();
+		
+		String accData = "Google maps predicts travel duration as "+rtd.toString()+". Difference is "+diff+"mins";
 		
 		String travelData = "You would take "+duration+" mins to travel from "+routeDetail.getName()+" in "+ routeDetail.getCity();
 		String weatherDes = "The weather in your city is "+weatherDesc+" and temperature is "+tempDesc;
 		//trying to return in json format 
-	    //return outString;
+	    
 		return new PredictedData(travelData,weatherDes,realtimedata,accData);
 	    }
 	
-	private Date getformattedTimestamp(String timestamp){
-		
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // IST time zone 
-		Date timeOfTravel = new Date();
-		try {
-			timeOfTravel = formatter.parse(timestamp);
-			
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return timeOfTravel;
-	}
 	
-	public Integer getTimeofDayZone(String timestamp){
-		
-		DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		formatter.setTimeZone(TimeZone.getTimeZone("Asia/Kolkata")); // IST time zone 
-		Date timeOfTravel = new Date();
-		Integer timezone = 0;
-		try {
-			timeOfTravel = formatter.parse(timestamp);
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(timeOfTravel);
-			Calendar ISTTime = new GregorianCalendar(TimeZone.getTimeZone("Asia/Kolkata"));
-			ISTTime.setTimeInMillis(calendar.getTimeInMillis());
-			int hour = ISTTime.get(Calendar.HOUR_OF_DAY);
-			int min = ISTTime.get(Calendar.MINUTE);
-			System.out.println(hour);
-			System.out.println(min);
-			timezone = ((hour*60)/15) + ((min+15)/15);
-			
-			
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-		/*Integer v = dt1.getHours();
-		Integer v1 = dt1.getMinutes();
-		System.out.println(v);
-		System.out.println(v1);
-		Integer Zone = ( (v*60)/15 ) +(( v1+15)/15);*/
-		
-		return timezone;
-		
-	}
 
 }

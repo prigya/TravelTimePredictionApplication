@@ -50,8 +50,21 @@
    <tr>
        <td></td>
 	   <td></td>
-       <td><h2>${accuracy}</h2></td>
+       <td><h2>${diff}</h2></td>
    </tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   <tr></tr>
+   
+   <tr>
+   <td></td>
+   <td></td>
+   <td><p style="color:Tomato;"><i>${metaInfo}</i></p></td>
 
    </table>
 </body>
