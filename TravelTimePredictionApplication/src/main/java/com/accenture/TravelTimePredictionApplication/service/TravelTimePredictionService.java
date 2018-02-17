@@ -51,15 +51,16 @@ public PredictedData getPredictedValue(String routeId, String timestamp) throws 
 		Long timeInMillis = Long.valueOf(0);
 		timeInMillis = timeOfTravel1.getTime() ;
 		
-		//TimeZone tz = TimeZone.getTimeZone("Asia/Kolkata");
-		//int offset = tz.getOffset(timeInMillis);
+		TimeZone tz = TimeZone.getTimeZone("Asia/Kolkata");
+		int offset = tz.getOffset(timeInMillis);
 		
 		timeZone = ((hour*60)/15) + ((min+15)/15);
 		dayofWeek = ISTTime.get(Calendar.DAY_OF_WEEK);
-		//timeInMillis = timeInMillis+offset  ;sss
+		timeInMillis = timeInMillis+offset  ;
 		
 		
 		/*Date timeofTrav = getformattedTimestamp(timestamp);
+		 //fgsdfgsdfg
 		
 		//get time zone and day of week
 		Integer timeZone = getTimeofDayZone(timestamp);
